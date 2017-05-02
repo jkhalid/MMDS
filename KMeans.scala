@@ -1,3 +1,8 @@
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** @author  Khalid Jahangeer
+ *  @date    Mon Oct  06 23:55:22 EST 2015
+ *  @see     LICENSE (MIT style license file).
+ */
 import org.apache.spark.rdd.RDD
 import org.apache.spark.SparkContext
 import org.apache.spark.broadcast.Broadcast
