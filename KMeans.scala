@@ -11,35 +11,13 @@ object KMeans {
     val k = 10   //50
     
     val docfile = "/Users/jkhalid/spark-1.5.0/docword.nips.txt" 
-   // val vocab_file = "/Users/jkhalid/spark-1.5.0/vocab.nips.txt"
+
     val final_file = "final.txt"
     val sc = new SparkContext("local","KMeansApp","SPARK_HOME",List("target/scala-2.10/simple-newproject_2.10-1.0.jar"))
     val docData = sc.textFile(docfile,2).filter { x => x.contains(" ") }.cache()
     val newdata = docData.map(x=>{val s = x.split(" "); (s(0),(s(1), s(2)))}  ).groupByKey()
     val finalData = newdata.map({case (k,v) => v.foldLeft(List[String]())({case (acc, (w, c)) => ( {var wRep=List[String](); for(i<-1 to Integer.parseInt(c)) wRep::=w; wRep:::acc })})})
-   // finalData.foreach(println)
-    //{var wRep = List[String]();for(i<-1 to Integer.parseInt(c)) wRep.addString(new StringBuilder(w)); wRep:::acc }
-   /* val vocabMap = new HashMap[Int,String]()
-    var x = 1
-       for (line <- Source.fromFile(vocab_file).getLines ) {
-            vocabMap += (x -> line)
-             x = x+1     }
-      // create the file as spark expects it to be
-      val pw = new PrintWriter(new File(final_file))
-      var prev = "1"
-      for (line <- docData.collect())
-      {   val new_line = line.split(" ")
-           if(!new_line(0).equals(prev))
-             {pw.println()
-              prev = new_line(0)}
-          val key =new_line(1)
-          val value = new_line(2).toInt
-          val word = vocabMap.get(key.toInt).mkString
-            for ( i <- 1 to value)
-            {  pw.print(word+" ") }
-       }
-      pw.close()
-       val new_data = sc.textFile(final_file, 2).map(_.split(" ").toSeq)*/
+  
        val hashingTF = new HashingTF()
        val tf: RDD[Vector] = hashingTF.transform(finalData)
        tf.cache()
